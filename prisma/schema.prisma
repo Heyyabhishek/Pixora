@@ -1,0 +1,133 @@
+// This is your Prisma schema file,
+// learn more about it in the docs: https://pris.ly/d/prisma-schema
+
+// Looking for ways to speed up your queries, or scale easily with your serverless or edge functions?
+// Try Prisma Accelerate: https://pris.ly/cli/accelerate-init
+
+generator client {
+  provider = "prisma-client-js"
+  output   = "../lib/generated/prisma"
+}
+
+datasource db {
+  provider = "postgresql"
+  url      = env("DATABASE_URL")
+}
+
+model User {
+  id                                      String              @id @default(uuid())
+  clerkUserId                             String              @unique
+  email                                   String              @unique
+  name                                    String?
+  imageUrl                                String?
+  role                                    UserRole            @default(UNASSIGNED)
+  createdAt                               DateTime            @default(now())
+  updatedAt                               DateTime            @updatedAt
+  credits                                 Int                 @default(100)
+  specialty                               String?
+  experience                              Int?
+  credentialUrl                           String?
+  description                             String?
+  verificationStatus                      VerificationStatus? @default(PENDING)
+  Appointment_Appointment_clientIdToUser  Appointment[]       @relation("Appointment_clientIdToUser")
+  Appointment_Appointment_creatorIdToUser Appointment[]       @relation("Appointment_creatorIdToUser")
+  Availability                            Availability[]
+  transactions                            CreditTransaction[]
+  Payout                                  Payout[]
+}
+
+model Availability {
+  id        String     @id @default(uuid())
+  creatorId String
+  startTime DateTime
+  endTime   DateTime
+  status    SlotStatus @default(AVAILABLE)
+  User      User       @relation(fields: [creatorId], references: [id], onDelete: Cascade)
+
+  @@index([creatorId, startTime])
+}
+
+model Appointment {
+  id                               String            @id @default(uuid())
+  clientId                         String
+  creatorId                        String
+  startTime                        DateTime
+  endTime                          DateTime
+  status                           AppointmentStatus @default(SCHEDULED)
+  notes                            String? 
+  clientDescription                String? 
+  videoSessionId                   String?
+  videoSessionToken                String?
+  createdAt                        DateTime          @default(now())
+  updatedAt                        DateTime          @updatedAt
+  User_Appointment_clientIdToUser  User              @relation("Appointment_clientIdToUser", fields: [clientId], references: [id])
+  User_Appointment_creatorIdToUser User              @relation("Appointment_creatorIdToUser", fields: [creatorId], references: [id])
+
+  @@index([status, startTime])
+  @@index([creatorId, startTime])
+}
+
+model CreditTransaction {
+  id        String          @id @default(uuid())
+  userId    String
+  amount    Int
+  type      TransactionType
+  packageId String?
+  createdAt DateTime        @default(now())
+  user      User            @relation(fields: [userId], references: [id], onDelete: Cascade)
+}
+
+model Payout {
+  id          String       @id @default(uuid())
+  creatorId   String
+  amount      Float
+  credits     Int
+  platformFee Float
+  netAmount   Float
+  paypalEmail String
+  status      PayoutStatus @default(PROCESSING)
+  createdAt   DateTime     @default(now())
+  updatedAt   DateTime     @updatedAt
+  processedAt DateTime?
+  processedBy String?
+  User        User         @relation(fields: [creatorId], references: [id], onDelete: Cascade)
+
+  @@index([status, createdAt])
+  @@index([creatorId, status])
+}
+
+enum UserRole {
+  UNASSIGNED
+  CLIENT
+  CREATOR
+  ADMIN
+}
+
+enum VerificationStatus {
+  PENDING
+  VERIFIED
+  REJECTED
+}
+
+enum SlotStatus {
+  AVAILABLE
+  BOOKED
+  BLOCKED
+}
+
+enum AppointmentStatus {
+  SCHEDULED
+  COMPLETED
+  CANCELLED
+}
+
+enum TransactionType {
+  CREDIT_PURCHASE
+  APPOINTMENT_DEDUCTION
+  ADMIN_ADJUSTMENT
+}
+
+enum PayoutStatus {
+  PROCESSING
+  PROCESSED
+}
