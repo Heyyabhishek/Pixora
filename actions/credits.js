@@ -115,6 +115,7 @@ export async function deductCreditsForAppointment(userId, creatorId) {
       where: { id: creatorId },
     });
 
+    // Ensure user has sufficient credits
     if (user.credits < APPOINTMENT_CREDIT_COST) {
       throw new Error("Insufficient credits to book an appointment");
     }
@@ -122,7 +123,10 @@ export async function deductCreditsForAppointment(userId, creatorId) {
     if (!creator) {
       throw new Error("Creator not found");
     }
+
+    // Deduct credits from patient and add to creator
     const result = await db.$transaction(async (tx) => {
+      // Create transaction record for patient (deduction)
       await tx.creditTransaction.create({
         data: {
           userId: user.id,
@@ -130,14 +134,17 @@ export async function deductCreditsForAppointment(userId, creatorId) {
           type: "APPOINTMENT_DEDUCTION",
         },
       });
+
+      // Create transaction record for creator (addition)
       await tx.creditTransaction.create({
         data: {
           userId: creator.id,
           amount: APPOINTMENT_CREDIT_COST,
-          type: "APPOINTMENT_DEDUCTION", 
+          type: "APPOINTMENT_DEDUCTION", // Using same type for consistency
         },
       });
 
+      // Update patient's credit balance (decrement)
       const updatedUser = await tx.user.update({
         where: {
           id: user.id,
@@ -149,6 +156,7 @@ export async function deductCreditsForAppointment(userId, creatorId) {
         },
       });
 
+      // Update creator's credit balance (increment)
       await tx.user.update({
         where: {
           id: creator.id,
@@ -168,4 +176,5 @@ export async function deductCreditsForAppointment(userId, creatorId) {
     console.error("Failed to deduct credits:", error);
     return { success: false, error: error.message };
   }
+
 }

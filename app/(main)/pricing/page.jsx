@@ -15,7 +15,7 @@ export default async function PricingPage() {
           href="/"
           className="flex items-center text-muted-foreground hover:text-white transition-colors"
         >
-          <ArrowLeft className="h-4 w-4 mr-2" />
+          <ArrowLeft className="h-18 w-4 mr-2" />
           Back to Home
         </Link>
       </div>

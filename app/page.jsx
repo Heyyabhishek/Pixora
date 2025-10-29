@@ -2,7 +2,7 @@ import Image from "next/image";
 import {Button} from "@/components/ui/button";
 import {Badge} from "@/components/ui/badge";
 import Link from "next/link";
-import { ArrowRight, Stethoscope, Check } from "lucide-react";
+import { ArrowRight,Camera, Check } from "lucide-react";
 import { creditBenefits, features, testimonials } from "@/lib/data";
 import { Card, CardContent, CardHeader, CardTitle } from "@/components/ui/card";
 
@@ -48,7 +48,7 @@ export default function Home() {
             </div>
 
           </div>
-          <div className="relative h-[400px] lg:h-[500px] rounded-xl overflow-hidden">
+          <div className="relative h-[400px] lg:h-[800px] rounded-xl overflow-hidden">
             <Image
             src="/Banner.png"
             alt="Creator"
@@ -113,14 +113,14 @@ export default function Home() {
           </div>
 
           <div className="mx-auto">
-            {/* Clerk Pricing Table */}
+            
             <Pricing /> 
 
-            {/* Description */}
+            
             <Card className="mt-12 bg-muted/20 border-emerald-900/30">
               <CardHeader>
                 <CardTitle className="text-xl font-semibold text-white flex items-center">
-                  <Stethoscope className="h-5 w-5 mr-2 text-emerald-400" />
+                  <Camera className="h-5 w-5 mr-2 text-emerald-400" />
                   How Our Credit System Works
                 </CardTitle>
               </CardHeader>

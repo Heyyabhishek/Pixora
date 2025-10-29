@@ -11,7 +11,7 @@ import {
   Calendar,
   CreditCard,
   ShieldCheck,
-  Stethoscope,
+  Camera,
   User,
 } from "lucide-react";
 
@@ -60,11 +60,11 @@ const Header = async () => {
                           variant="outline"
                           className="hidden md:inline-flex items-center gap-2"
                         >
-                          <Stethoscope className="h-4 w-4" />
+                          <Camera className="h-4 w-4" />
                           Creator Dashboard
                         </Button>
                         <Button variant="ghost" className="md:hidden w-10 h-10 p-0">
-                          <Stethoscope className="h-4 w-4" />
+                          <Camera className="h-4 w-4" />
                         </Button>
                       </Link>
                     )}
@@ -89,11 +89,11 @@ const Header = async () => {
                            variant="outline"
                           className="hidden md:inline-flex items-center gap-2"
                         >
-                         <user className="h-4 w-4" />
+                         <User className="h-4 w-4" />
                          Complete profile
                        </Button>
                        <Button variant="ghost" className="md:hidden w-10 h-10 p-0">
-                         <user className="h-4 w-4" />
+                         <User className="h-4 w-4" />
                        </Button>
                     </Link>
                    )}

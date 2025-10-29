@@ -45,13 +45,13 @@ export async function setUserRole(formData) {
 
     // For creator role - need additional information
     if (role === "CREATOR") {
-      const specialty = formData.get("specialty");
+      const speciality = formData.get("speciality");
       const experience = parseInt(formData.get("experience"), 10);
       const credentialUrl = formData.get("credentialUrl");
       const description = formData.get("description");
 
       // Validate inputs
-      if (!specialty || !experience || !credentialUrl || !description) {
+      if (!speciality || !experience || !credentialUrl || !description) {
         throw new Error("All fields are required");
       }
 
@@ -61,7 +61,7 @@ export async function setUserRole(formData) {
         },
         data: {
           role: "CREATOR",
-          specialty,
+          speciality,
           experience,
           credentialUrl,
           description,

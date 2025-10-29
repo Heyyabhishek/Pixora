@@ -1,18 +1,19 @@
 import { redirect } from "next/navigation";
-//import { getCreatorsBySpecialty } from "@/actions/creators-listing";
+import { getCreatorsBySpeciality } from "@/actions/creators.listing";
 //import { CreatorCard } from "../components/creator-card";
-//import { PageHeader } from "@/components/page-header";
+import { PageHeader } from "@/components/page-header";
+import CreatorCard from "@/components/creator-card";
 
 export default async function CreatorSpecialtyPage({ params }) {
-  const { specialty } = await params;
+  const { speciality } = params;
 
-  // Redirect to main creators page if no specialty is provided
-  if (!specialty) {
+  // Redirect to main creators page if no speciality is provided
+  if (!speciality) {
     redirect("/creators");
   }
 
-  // Fetch creators by specialty
-  const { creators, error } = await getCreatorsBySpecialty(specialty);
+  // Fetch creators by speciality
+  const { creators, error } = await getCreatorsBySpeciality(speciality);
 
   if (error) {
     console.error("Error fetching creators:", error);
@@ -21,7 +22,7 @@ export default async function CreatorSpecialtyPage({ params }) {
   return (
     <div className="space-y-5">
       <PageHeader
-        title={specialty.split("%20").join(" ")}
+        title={speciality.split("%20").join(" ")}
         backLink="/creators"
         backLabel="All Specialties"
       />
@@ -38,8 +39,8 @@ export default async function CreatorSpecialtyPage({ params }) {
             No creators available
           </h3>
           <p className="text-muted-foreground">
-            There are currently no verified creators in this specialty. Please
-            check back later or choose another specialty.
+            There are currently no verified creators in this speciality. Please
+            check back later or choose another speciality.
           </p>
         </div>
       )}

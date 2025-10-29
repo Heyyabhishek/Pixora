@@ -24,7 +24,7 @@ model User {
   createdAt                               DateTime            @default(now())
   updatedAt                               DateTime            @updatedAt
   credits                                 Int                 @default(100)
-  specialty                               String?
+  speciality                              String?
   experience                              Int?
   credentialUrl                           String?
   description                             String?
@@ -90,7 +90,7 @@ model Payout {
   updatedAt   DateTime     @updatedAt
   processedAt DateTime?
   processedBy String?
-  User        User         @relation(fields: [creatorId], references: [id], onDelete: Cascade)
+  creator        User         @relation(fields: [creatorId], references: [id], onDelete: Cascade)
 
   @@index([status, createdAt])
   @@index([creatorId, status])
