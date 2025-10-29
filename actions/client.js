@@ -1,4 +1,3 @@
-"use server";
 import { db } from "@/lib/prisma";
 import { auth } from "@clerk/nextjs/server";
 
@@ -32,12 +31,11 @@ export async function getClientAppointments() {
         clientId: user.id,
       },
       include: {
-        // ⭐ FIXED: Use correct relation name from Prisma schema
-        User_Appointment_creatorIdToUser: {
+        doctor: {
           select: {
             id: true,
             name: true,
-            speciality: true,  // Note: Your schema uses "speciality" not "specialty"
+            specialty: true,
             imageUrl: true,
           },
         },
