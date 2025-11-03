@@ -133,8 +133,8 @@ export async function getCreatorAppointments() {
         },
       },
       include: {
-        User_Appointment_clientIdToUser: true,
-        User_Appointment_creatorIdToUser: true,
+        client: true,
+        creator: true,
       },
       orderBy: {
         startTime: "asc",
@@ -181,8 +181,8 @@ export async function cancelAppointment(formData) {
         id: appointmentId,
       },
       include: {
-        User_Appointment_clientIdToUser: true,
-        User_Appointment_creatorIdToUser: true,
+        client: true,
+        creator: true,
       },
     });
 
@@ -359,7 +359,7 @@ export async function markAppointmentCompleted(formData) {
         creatorId: creator.id,
       },
       include: {
-        User_Appointment_clientIdToUser: true,
+        client: true,
       },
     });
 

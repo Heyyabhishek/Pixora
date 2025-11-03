@@ -31,11 +31,11 @@ export async function getClientAppointments() {
         clientId: user.id,
       },
       include: {
-        doctor: {
+        creator: {
           select: {
             id: true,
             name: true,
-            specialty: true,
+            speciality: true,
             imageUrl: true,
           },
         },

@@ -52,28 +52,30 @@ export default function AvailabilitySettings({ slots }) {
   }
 
   // Handle slot submission
-  const onSubmit = async (data) => {
-    if (loading) return;
+  // Handle slot submission
+const onSubmit = async (data) => {
+  if (loading) return;
 
-    const formData = new FormData();
+  const formData = new FormData();
 
-    const today = new Date().toISOString().split("T")[0];
+  const today = new Date().toISOString().split("T")[0];
 
-    // Create date objects
-    const startDate = createLocalDateFromTime(data.startTime);
-    const endDate = createLocalDateFromTime(data.endTime);
+  // Create date objects
+  const startDate = createLocalDateFromTime(data.startTime);
+  const endDate = createLocalDateFromTime(data.endTime);
 
-    if (startDate >= endDate) {
-      toast.error("End time must be after start time");
-      return;
-    }
+  if (startDate >= endDate) {
+    toast.error("End time must be after start time");
+    return;
+  }
 
-    // Add to form data
-    formData.append("startTime", startDate.toISOString());
-    formData.append("endTime", endDate.toISOString());
+  // Add to form data
+  formData.append("startTime", startDate.toISOString());
+  formData.append("endTime", endDate.toISOString());
 
-    await submitSlots(formData);
-  };
+  await submitSlots(formData);
+};
+
 
   useEffect(() => {
     if (data && data?.success) {
